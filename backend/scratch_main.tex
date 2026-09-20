@@ -1,0 +1,416 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Core Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+% --- Custom Color Palette (FinSage Brand Palette) ---
+\definecolor{sageGreen}{RGB}{46, 204, 113}
+\definecolor{brandPurple}{RGB}{132, 0, 255}
+\definecolor{darkCharcoal}{RGB}{20, 20, 25}
+\definecolor{lightGray}{RGB}{245, 246, 250}
+\definecolor{borderGray}{RGB}{220, 224, 230}
+\definecolor{commentGray}{RGB}{120, 130, 140}
+\definecolor{codeBackground}{RGB}{248, 249, 250}
+
+% --- Hyperref Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=brandPurple,
+    filecolor=brandPurple,      
+    urlcolor=sageGreen,
+    citecolor=brandPurple,
+    pdftitle={FinSage Hackathon Submission Report},
+    pdfpagemode=FullScreen,
+}
+
+% --- Header and Footer Setup ---
+\setlength{\headheight}{15pt} % Fix fancyhdr headheight warning
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{brandPurple}{\textbf{FinSage}} -- Hackathon Submission}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\small \textcolor{commentGray}{Empowering Financial Freedom for Gen-Z}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- Section Styling ---
+\titleformat{\section}
+  {\color{brandPurple}\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\color{darkCharcoal}\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+% --- Code Syntax Highlighting ---
+\lstdefinestyle{codeStyle}{
+    backgroundcolor=\color{codeBackground},   
+    commentstyle=\color{commentGray}\itshape,
+    keywordstyle=\color{brandPurple}\bfseries,
+    numberstyle=\tiny\color{commentGray},
+    stringstyle=\color{sageGreen},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{borderGray},
+    escapeinside={(*@}{@*)}
+}
+\lstset{style=codeStyle}
+
+% --- Callout Box Setup ---
+\newtcolorbox{highlightbox}[1]{
+    colback=brandPurple!5!white,
+    colframe=brandPurple,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=4mm,
+    boxrule=0.8mm
+}
+
+\newtcolorbox{infobox}[1]{
+    colback=sageGreen!5!white,
+    colframe=sageGreen,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=4mm,
+    boxrule=0.8mm
+}
+
+% --- Document Metadata ---
+\title{
+    \vspace{-2cm}
+    % \includegraphics[width=3cm]{logo.png} \\ % Uncomment this in Overleaf if you upload a logo.png
+    {\color{brandPurple}\Huge\textbf{FinSage}} \\
+    \vspace{0.3cm}
+    \large \textit{The Multi-Agent AI Financial Co-Pilot for Gen-Z} \\
+    \vspace{0.8cm}
+    \Large \textbf{Hackathon Project Submission \& Technical Briefing}
+    \vspace{1cm}
+}
+\author{
+    \textbf{Omkar \& Team FinSage} \\
+    \texttt{omkar@example.com} % Replace with actual emails
+}
+\date{\today}
+
+% --- Begin Document ---
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Managing finances is a critical friction point for college students and young professionals. Traditional spreadsheets require manual upkeep, while standard consumer banking apps offer generic, non-actionable suggestions. \textbf{FinSage} bridges this financial literacy gap by acting as a modern, dark-mode, multi-agent AI co-pilot. FinSage integrates a responsive dashboard with a multi-agent AI ``Financial Council'' that debates budgeting, savings, debt management, and investment strategies. It processes real-time transaction tracking via standard SMS/WhatsApp webhook integrations, auto-generates custom beginner-friendly stock recommendation portfolios based on risk appetites, and compiles a comprehensive browser-rendered monthly briefing video using Remotion. This document details the architectural layout, core subsystems, database design, and key code implementations submitted for the hackathon.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% =========================================================================
+\section{Introduction \& Problem Statement}
+% =========================================================================
+Gen-Z college students and young professionals face a highly volatile economic climate coupled with limited structured financial training. The key bottlenecks in current financial solutions include:
+\begin{itemize}
+    \item \textbf{High Manual Friction:} Manual budgeting spreadsheets are tedious, error-prone, and rapidly abandoned by younger users.
+    \item \textbf{Isolated, Conflicting Advice:} Budgeting guidelines, savings targets, debt payment formulas, and investment plans are typically computed in isolation. This results in conflicting guidance (e.g., advising aggressive debt payoff while simultaneously advising index-fund investing, without adjusting for cash flow constraint).
+    \item \textbf{Information Overload:} Long spreadsheets and technical charts do not resonate with visual-first Gen-Z users, who consume data more effectively through short-form visual media.
+\end{itemize}
+
+\textbf{FinSage} addresses these structural issues through a three-pronged paradigm:
+1. \textbf{Frictionless Messaging-based Data Entry:} Logging transactions is as quick as sending a standard text message on WhatsApp.
+2. \textbf{Multi-Agent AI Reconciliation:} Specialized agents debate behind the scenes and synthesize a unified, optimal monthly directive.
+3. \textbf{Dynamic Video Briefings:} The unified strategy is compiled into a highly interactive, animated monthly briefing video rendered entirely on-the-fly in the browser.
+
+% =========================================================================
+\section{System Architecture}
+% =========================================================================
+The FinSage platform is engineered on a decoupled, modern web architecture designed for scalability, low latency, and ease of deployment.
+
+\subsection{Architectural Layout}
+The architecture spans three core directories within the codebase:
+\begin{itemize}
+    \item \textbf{Backend API (\texttt{/backend}):} Run on Node.js and Express.js, using Mongoose for MongoDB data modeling. Integrated with the Groq Cloud SDK (Llama 3.1 8B Model) for high-performance agent processing, and Twilio Webhooks for real-time messaging parsing.
+    \item \textbf{Frontend Dashboard (\texttt{/frontend}):} Built with React 19.x, Vite, and Tailwind CSS. Features dynamic dark-mode components with custom hover spotlights and stellar particle animations (\texttt{MagicBento}).
+    \item \textbf{Video Synthesis (\texttt{/frontend/src/remotion}):} A client-side video composition suite powered by Remotion to translate LLM-generated JSON synthesis payloads into fully animated MP4-like video tracks directly inside the dashboard.
+    \item \textbf{Mobile Client (\texttt{/mobile}):} A cross-platform companion client built using React Native and Expo to enable on-the-go cross-device syncing.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \color{brandPurple}
+    \framebox(400,160){
+        \begin{minipage}{5.2in}
+            \vspace{0.2cm}
+            \centering
+            \textbf{\Large FinSage Subsystem Workflows} \\
+            \small
+            \vspace{0.4cm}
+            \texttt{[WhatsApp / Twilio webhook]} $\longrightarrow$ \texttt{[Express.js API Router]} \\
+            $\downarrow$ (Verify/Log) \\
+            \texttt{[MongoDB Cloud Database]} \\
+            $\downarrow$ (Gather Financial Context) \\
+            \texttt{[Multi-Agent Council (Groq Llama 3.1)]} $\longrightarrow$ \texttt{[Unified Strategy JSON]} \\
+            $\downarrow$ \\
+            \texttt{[Vite Dashboard UI (Magic Bento)]} $\longleftrightarrow$ \texttt{[Remotion Video Render Scene]}
+            \vspace{0.2cm}
+        \end{minipage}
+    }
+    \caption{Data flow diagram showcasing real-time transaction logging, database synchronization, agentic reasoning, and interactive front-end rendering.}
+    \label{fig:arch}
+\end{figure}
+
+% =========================================================================
+\section{Core Product Subsystems}
+% =========================================================================
+
+\subsection{The Multi-Agent AI Council Synthesis}
+Rather than using generic, static rules, FinSage employs a multi-agent system consisting of four specialized agents:
+\begin{enumerate}
+    \item \textbf{Budgeting Agent:} Analyzes income-to-expense ratios, evaluates category allocations, and detects outliers.
+    \item \textbf{Savings Agent:} Monitors short-term and long-term goal trajectories and suggests adjustments to reach timelines.
+    \item \textbf{Debt Agent:} Formulates payoff prioritization (e.g., Avalanche vs. Snowball models) based on interest rates.
+    \item \textbf{Investment Agent:} Assesses risk profile toggles and compiles beginner-friendly asset allocation strategies.
+\end{enumerate}
+
+These agents submit their analyses to a master synthesis controller. The controller executes a structured system prompt using the Groq Llama 3.1 8B API, compelling the model to resolve conflicts and output a strict, compilable JSON schema containing a unified monthly action plan and video keyframes.
+
+\subsection{Twilio-Powered WhatsApp Webhook Integration}
+To solve onboarding and usage friction, users link their WhatsApp number to their account using an 8-character verification code that expires in 5 minutes. Once linked, any text sent in the format:
+\begin{center}
+    \texttt{<type>, <category>, <amount>, <description>}
+\end{center}
+is parsed by a webhook receiver, logged in MongoDB, and categorized instantly. Users can also message \texttt{"history"} to retrieve their latest 10 transactions.
+
+\subsection{Remotion Browser-Based Video Briefing}
+Instead of reading an extensive wall of numbers, users click ``Run Synthesis'' on the dashboard. The application parses the Llama 3.1 structured JSON output and streams key assets into an intro-and-category sequence structured inside Remotion. Components dynamically animate key variables like \texttt{netSavings} and \texttt{headline} inside custom scenes using cubic interpolations in real-time.
+
+% =========================================================================
+\section{Database Schema Design}
+% =========================================================================
+The domain model is designed around modular Mongoose schemas in the backend. 
+
+\subsection{Mongoose Transactions Schema}
+Every logged transaction contains references to the student, category labels, numeric amount, and details on whether it was manually logged or automated via WhatsApp.
+\begin{lstlisting}[language=Java, caption=Transaction Data Model Schema, label=lst:transaction]
+const mongoose = require('mongoose');
+
+const TransactionSchema = new mongoose.Schema({
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: true
+  },
+  type: {
+    type: String,
+    enum: ['income', 'expense', 'transfer', 'investment'],
+    required: true
+  },
+  amount: {
+    type: Number,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  description: String,
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['cash', 'card', 'upi', 'bank_transfer', 'other'],
+    default: 'other'
+  },
+  notes: String, // e.g., 'Added via WhatsApp'
+  excludeFromReports: {
+    type: Boolean,
+    default: false
+  }
+});
+
+module.exports = mongoose.model('Transaction', TransactionSchema);
+\end{lstlisting}
+
+\newpage
+% =========================================================================
+\section{Key Technical Implementations}
+% =========================================================================
+
+\subsection{Groq Llama 3.1 Multi-Agent Synthesis Controller}
+Below is the core implementation located in \texttt{synthesisController.js}. It handles parallel collection of student profiles, active debts, transactional logs, and agent states, feeding them as context into a structured JSON completion request.
+
+\begin{lstlisting}[language=Java, caption=AI Council Synthesis Controller (Groq Llama 3.1), label=lst:synthesis]
+const Groq = require('groq-sdk');
+const Student = require('../models/Student');
+const StudentProfile = require('../models/StudentProfile');
+const Transaction = require('../models/Transaction');
+const AgentData = require('../models/AgentData');
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+exports.getSynthesis = async (req, res) => {
+  try {
+    const { firebaseUid } = req.params;
+    const student = await Student.findOne({ firebaseUid });
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student not found' });
+    }
+    const studentId = student._id;
+
+    // Gather all agent data, profile, and current transactions in parallel
+    const [profile, budgetAgent, savingsAgent, debtAgent, investmentAgent, monthlyTx] = 
+      await Promise.all([
+        StudentProfile.findOne({ student: studentId }),
+        AgentData.findOne({ student: studentId, type: 'budget' }),
+        AgentData.findOne({ student: studentId, type: 'savings' }),
+        AgentData.findOne({ student: studentId, type: 'debt' }),
+        AgentData.findOne({ student: studentId, type: 'investment' }),
+        Transaction.aggregate([
+          { $match: { student: studentId, excludeFromReports: { $ne: true } } },
+          { $group: { _id: '$type', total: { $sum: '$amount' }, count: { $sum: 1 } } }
+        ])
+      ]);
+
+    const contextForAI = {
+      studentName: student.name,
+      currency: profile?.currency || 'INR',
+      monthlyIncome: profile?.monthlyIncome || 0,
+      monthlyBudget: profile?.monthlyBudget || 0,
+      currentSavings: profile?.currentSavings || 0,
+      savingsGoal: profile?.savingsGoal || 0,
+      totalDebt: profile?.totalDebt || 0,
+      shortTermGoals: profile?.shortTermGoals || [],
+      budgetAgentData: budgetAgent?.data || null,
+      savingsAgentData: savingsAgent?.data || null,
+      debtAgentData: debtAgent?.data || null,
+      investmentAgentData: investmentAgent?.data || null
+    };
+
+    const systemPrompt = `You are a financial video briefing generator for an Indian student fintech app called FinSage.
+You must synthesize all the user's financial data and AI agent outputs into a structured JSON for a 30-second video briefing.
+Return ONLY valid JSON. The JSON must have this EXACT structure:
+{
+  "intro": { "monthName": "February 2026", "totalIncome": 50000, "totalExpenses": 32000, "netSavings": 18000, "headline": "string" },
+  "budget": { "budgetCategories": [{ "name": "Food", "spent": 8000, "limit": 10000, "percentUsed": 80 }], "budgetScore": 72, "topOptimization": "string" },
+  "savings": { "monthlySavings": 18000, "savingsGoal": 100000, "currentSavings": 45000, "savingsRate": 36, "topSavingsTip": "string" },
+  "debt": { "totalDebt": 25000, "monthlyPayment": 5000, "debts": [], "strategy": "string" },
+  "investment": { "riskLevel": "Moderate", "allocations": [], "topPick": "string" },
+  "actionPlan": { "actions": ["action1", "action2", "action3", "action4"] }
+}`;
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify(contextForAI) }
+      ],
+      model: 'llama-3.1-8b-instant',
+      temperature: 0.4,
+      response_format: { type: 'json_object' }
+    });
+
+    const content = completion.choices[0]?.message?.content;
+    const synthesisData = JSON.parse(content);
+
+    res.status(200).json({ success: true, data: synthesisData });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+\end{lstlisting}
+
+\subsection{WhatsApp Twilio Hook Message Parser}
+Below is the core parsing logic used in \texttt{twilioController.js} to process user texts and translate them to Mongoose models.
+
+\begin{lstlisting}[language=Java, caption=Twilio Webhook Parser (\texttt{twilioController.js}), label=lst:twilioparse]
+const parseTransactionMessage = (message) => {
+  const parts = message.split(',').map(part => part.trim());
+
+  if (parts.length < 3) {
+    return { 
+      error: 'Not enough information. Need format: type, category, amount, description'
+    };
+  }
+
+  const [type, category, amountStr, ...descriptionParts] = parts;
+  const description = descriptionParts.join(', ') || '';
+
+  // Validate transaction type
+  const normalizedType = type.toLowerCase();
+  if (!['income', 'expense', 'transfer', 'investment'].includes(normalizedType)) {
+    return { error: `Invalid type: "${type}". Must be income, expense, transfer, or investment` };
+  }
+
+  // Parse numeric amount safely, stripping currency symbols (like Rs or commas)
+  const amount = parseFloat(amountStr.replace(/[Rs,]/g, ''));
+  if (isNaN(amount) || amount <= 0) {
+    return { error: `Invalid amount: "${amountStr}". Must be a positive number.` };
+  }
+
+  return {
+    type: normalizedType,
+    category: category.toLowerCase().replace(/\s+/g, '_'),
+    amount,
+    description
+  };
+};
+\end{lstlisting}
+
+% =========================================================================
+\section{Interactive UI \& Premium Visuals}
+% =========================================================================
+FinSage emphasizes visual excellence to cater to Gen-Z user experience requirements. Key visual aspects implemented in the dashboard include:
+\begin{itemize}
+    \item \textbf{Global Mouse Spotlight:} An active \texttt{mousemove} tracking mechanism that projects a radial gradient mask (\texttt{rgba(132, 0, 255, 0.15)}) behind cards. This dynamic highlight effect follows the user's cursor across bento boxes.
+    \item \textbf{Animated Floating Particles:} The \texttt{MagicBento} component generates isolated, light-weight div particles in the background. These particles float using CSS keyframe translations on active hover.
+    \item \textbf{Glassmorphism Layers:} Blurring backdrops (\texttt{backdrop-filter: blur(12px)}) coupled with thin borders (\texttt{rgba(255,255,255,0.08)}) to construct a state-of-the-art interface.
+\end{itemize}
+
+\begin{highlightbox}{Hackathon Criteria Met}
+    \begin{itemize}[leftmargin=*]
+        \item \textbf{Real-world Usability:} Eliminates onboarding friction by turning WhatsApp into a data entry ledger.
+        \item \textbf{Technical Complexity:} Orchestrates multiple distinct database pipelines, Twilio messaging servers, Groq inference APIs, and custom Remotion compilation.
+        \item \textbf{Premium Visual Finish:} Curated dark-themed colors (deep indigo, glowing sage green) instead of standard framework color defaults.
+    \end{itemize}
+\end{highlightbox}
+
+% =========================================================================
+\section{Future Roadmap \& Scaling}
+% =========================================================================
+While the prototype has fully demonstrated the core logic successfully, the scaling blueprint for FinSage includes:
+\begin{enumerate}
+    \item \textbf{Open Banking APIs (Plaid/Yodlee):} Automatic verification of transactions alongside the WhatsApp logging framework to avoid single-point discrepancies.
+    \item \textbf{Voice Memo Logging:} Extending the WhatsApp webhook using an audio transcript pipeline (Whisper API) to enable voice-recorded transactions.
+    \item \textbf{Collaborative Shared Councils:} Group budgets for flatmates or student club accounts where the AI Council acts as an automated treasury officer.
+\end{enumerate}
+
+% =========================================================================
+\section{Conclusion}
+% =========================================================================
+FinSage represents a significant step forward in making financial literacy approachable and actionable. By combining agentic AI reasoning, mobile-native messaging integrations, and dynamic browser video briefings, the platform successfully solves the friction, complexity, and engagement challenges associated with personal finance management for college students and young professionals.
+
+\end{document}

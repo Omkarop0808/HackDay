@@ -1,0 +1,4 @@
+.env
+node_modules
+error_log.txt
+scratch_query.js

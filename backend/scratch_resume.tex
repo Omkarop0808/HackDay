@@ -1,0 +1,230 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages
+\usepackage[
+    ignoreheadfoot,
+    top=2 cm,
+    bottom=2 cm,
+    left=2 cm,
+    right=2 cm,
+    footskip=1.0 cm
+]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+
+\definecolor{primaryColor}{RGB}{0, 0, 0}
+\definecolor{headingBlue}{RGB}{80, 140, 200}
+\definecolor{iconGray}{RGB}{90, 90, 90}
+\definecolor{linkBlue}{RGB}{70, 130, 180}
+
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage[
+    pdftitle={Omkar Patil Resume},
+    pdfauthor={Omkar Patil},
+    pdfcreator={LaTeX},
+    colorlinks=true,
+    urlcolor=linkBlue
+]{hyperref}
+\usepackage{bookmark}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{needspace}
+\usepackage{iftex}
+
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+\newcommand{\YourName}{Omkar Ishwar Patil}
+\newcommand{\YourEmail}{omkarpatilop0826@gmail.com}
+\newcommand{\YourPhone}{+91-9082876612}
+\newcommand{\YourLinkedIn}{https://www.linkedin.com/in/omkar-patil-1a8818346/}
+\newcommand{\YourGithub}{https://github.com/Omkarop0808}
+
+\raggedright
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{0.15cm}
+\pagenumbering{gobble}
+
+\titleformat{\section}
+  {\bfseries\large\color{headingBlue}}
+  {}
+  {0pt}
+  {}
+  [\vspace{-2pt}\titrule\vspace{2pt}]
+
+\titlespacing{\section}{0pt}{6pt}{4pt}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+
+\newenvironment{highlights}{
+    \begin{itemize}[leftmargin=10pt, itemsep=1pt, topsep=2pt]
+}{
+    \end{itemize}
+}
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0cm}{0cm}
+}{
+    \end{adjustwidth}
+}
+
+\begin{document}
+
+% ================= HEADER =================
+\begin{center}
+    {\fontsize{23pt}{23pt}\selectfont \YourName}
+
+    \vspace{4pt}
+
+    \normalsize
+    {\color{iconGray}\faEnvelope}~\href{mailto:\YourEmail}{\YourEmail} \quad
+    {\color{iconGray}\faPhone}~\href{tel:\YourPhone}{\YourPhone} \quad
+    {\color{iconGray}\faCode}~\href{https://leetcode.com/u/Omkar_08_OP/}{LeetCode}
+
+    \vspace{2pt}
+
+    {\color{iconGray}\faLinkedin}~\href{\YourLinkedIn}{LinkedIn} \quad
+    {\color{iconGray}\faGithub}~\href{\YourGithub}{GitHub}
+\end{center}
+
+\vspace{0.1cm}
+
+% ================= ABOUT ME =================
+\section{About Me}
+
+\begin{onecolentry}
+Full-stack engineering student building production-grade web applications with React, Next.js, and Node.js. Experienced in backend development, API design, AI agent integration, and data-driven systems using PostgreSQL and MongoDB. Focused on writing clean, maintainable code and delivering reliable, scalable software.
+\end{onecolentry}
+
+% ================= EDUCATION =================
+\section{Education}
+
+\begin{onecolentry}
+\textbf{Fr. Conceicao Rodrigues College of Engineering, Mumbai} \hfill \textit{2024 -- Present} \\
+B.Tech in Computer Engineering \hfill \textit{CGPA: 8.05}
+\end{onecolentry}
+
+\vspace{0.05cm}
+
+\begin{onecolentry}
+\textbf{T.P. Bhatia College of Science} \hfill \textit{2022 -- 2024} \\
+Higher Secondary Certificate (12th) \hfill \textit{88.67\% \;|\; CET: 98.19}
+\end{onecolentry}
+
+\vspace{0.05cm}
+
+\begin{onecolentry}
+\textbf{P.J. Pancholia High School} \hfill \textit{2022} \\
+Secondary School Certificate (10th) \hfill \textit{88.60\%}
+\end{onecolentry}
+
+% ================= SKILLS =================
+\section{Skills}
+
+\begin{onecolentry}
+\textbf{Languages:} C, C++, Java, JavaScript, Python
+\end{onecolentry}
+
+\begin{onecolentry}
+\textbf{Frameworks \& Libraries:} React, Next.js, Node.js, Express, Tailwind CSS, shadcn/ui, Socket.io
+\end{onecolentry}
+
+\begin{onecolentry}
+\textbf{Databases \& Tools:} PostgreSQL, MongoDB, Supabase, Firebase, Prisma, Git, GitHub, Vercel
+\end{onecolentry}
+
+\begin{onecolentry}
+\textbf{AI \& ML:} Gemini API, RAG Pipelines, Multi-Agent Systems, Random Forest (Scikit-learn), LLM Integration
+\end{onecolentry}
+
+\begin{onecolentry}
+\textbf{Interests:} Full-Stack Engineering, AI Agent Systems, Backend Architecture, Scalable Web Applications
+\end{onecolentry}
+
+% ================= PROJECTS =================
+\section{Projects}
+
+% -------- FINEXA --------
+\begin{onecolentry}
+\textbf{Finexa -- AI-Powered Personal Finance Platform}
+\end{onecolentry}
+
+\begin{onecolentry}
+\textit{Tech: Next.js, Prisma, PostgreSQL, Gemini AI, Inngest, Tailwind CSS} \hfill
+{\color{iconGray}\faGithub}~\href{https://github.com/Omkarop0808/Finexa}{GitHub} \;|\;
+{\color{linkBlue}\faExternalLinkAlt}~\href{https://finexa-1.vercel.app/}{Live Demo}
+\end{onecolentry}
+
+\begin{onecolentry}
+\begin{highlights}
+\item Integrated Gemini AI to automate receipt OCR parsing and transaction categorization, eliminating manual expense logging and generating natural-language monthly budget reports with actionable spending breakdowns.
+\item Enforced middleware-protected authentication, Prisma transactional integrity, and API rate limiting across all financial operations, ensuring data consistency under concurrent user load.
+\item Architected a PostgreSQL schema supporting multi-account balance tracking and category-level analytics, with Inngest-powered background jobs handling recurring expense automation and scheduled budget alerts.
+\end{highlights}
+\end{onecolentry}
+
+\vspace{0.1cm}
+
+% -------- SAHAYA.AI --------
+\begin{onecolentry}
+\textbf{Sahaya.AI -- Intelligent Learning \& Career Preparation System}
+\end{onecolentry}
+
+\begin{onecolentry}
+\textit{Tech: React, Node.js, Supabase, Gemini AI, Scikit-learn, Socket.io, WebRTC} \hfill
+{\color{iconGray}\faGithub}~\href{https://github.com/Omkarop0808}{GitHub}
+\end{onecolentry}
+
+\begin{onecolentry}
+\begin{highlights}
+\item Built a RAG pipeline ingesting PDFs and YouTube URLs to auto-generate structured lessons, flashcard banks, and adaptive quizzes via Gemini AI, with a Random Forest model (Scikit-learn) predicting optimal study hour allocation per subject based on historical performance data.
+\item Engineered a real-time Group Discussion module using WebRTC (ZegoCloud) and Socket.io; on session end, an AI agent analyzes speech transcripts and participation metrics to auto-generate structured GD performance reports with improvement recommendations.
+\item Developed a Resume Hub with a JD Scanner agent performing semantic cross-referencing of resume content against job descriptions, alongside a Monaco-editor DSA arena featuring a 3-tier AI hint ladder (Nudge → Approach → Full Walkthrough) and Gemini-powered code review.
+\end{highlights}
+\end{onecolentry}
+
+\vspace{0.1cm}
+
+% -------- FINSAGE --------
+\begin{onecolentry}
+\textbf{FinSage -- Multi-Agent AI Financial Guidance Platform}
+\end{onecolentry}
+
+\begin{onecolentry}
+\textit{Tech: React, Vite, Node.js, MongoDB, Firebase, Groq (Llama 3.1), Twilio API, Remotion, Tailwind CSS} \hfill
+{\color{iconGray}\faGithub}~\href{https://github.com/Omkarop0808}{GitHub}
+\end{onecolentry}
+
+\begin{onecolentry}
+\begin{highlights}
+\item Architected a cooperative multi-agent AI advisory council (Budget, Savings, Debt, Investment) and a 10-year mathematical simulation engine using Groq Llama 3.1 and MongoDB, synthesizing complex financial trajectories into unified monthly plans compiled on-the-fly into 30-second browser-animated video briefings via Remotion.
+\item Built an on-the-go transaction logging and equity recommendation pipeline by creating a Node.js Express webhook linked to the Twilio WhatsApp API to auto-categorize entries in MongoDB in real-time, secured via an 8-character OTP protocol (5-minute TTL), and integrated with Alpha Vantage API for risk-adjusted stock recommendations.
+\end{highlights}
+\end{onecolentry}
+
+% ================= ACHIEVEMENTS =================
+\section{Achievements \& Activities}
+\begin{onecolentry}
+\begin{highlights}
+\item \textbf{Winner}, Inter-College Robothon (Crescendo); earned \textbf{Google Cloud CI/CD Skill Badge}.
+\item \textbf{3x Runner-up} in Hackathons; selected for \textbf{AI for Bharat Development Phase} (AWS).
+\item Secured \textbf{Rank 7} among top participants in Apertre 3.0, a 30-day competitive open-source program by Resourcio Community.
+\item Solved \textbf{50+ problems} on LeetCode and practice regularly on CodeChef (\textbf{1 Star}), covering core DSA topics.
+\end{highlights}
+\end{onecolentry}
+
+\end{document}
